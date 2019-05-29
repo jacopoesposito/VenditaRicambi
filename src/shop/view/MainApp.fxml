@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.PasswordField?>
+
+<AnchorPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shop.view.MainAppController">
+   <children>
+      <TextField fx:id="mailTextField" minWidth="-Infinity" stylesheets="@DarkTheme.css" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="222.0" AnchorPane.topAnchor="111.0" />
+      <PasswordField fx:id="passTextField" AnchorPane.leftAnchor="222.0" stylesheets="@DarkTheme.css" AnchorPane.rightAnchor="222.0" AnchorPane.topAnchor="188.0" />
+      <Label text="User:" AnchorPane.leftAnchor="162.0" AnchorPane.topAnchor="128.0" />
+      <Label text="Password:" AnchorPane.leftAnchor="133.0" AnchorPane.topAnchor="205.0" />
+      <HBox fillHeight="false" layoutX="100.0" layoutY="256.0" prefHeight="83.0" prefWidth="439.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="256.0">
+         <children>
+            <ButtonBar fx:id="barButton" prefHeight="40.0" prefWidth="450.0">
+              <buttons>
+                <Button fx:id="accediButton" mnemonicParsing="false" onAction="#handleAccedi" prefWidth="200.0" text="Accedi" />
+                  <Button fx:id="registratiButton" mnemonicParsing="false" onAction="#handleRegistrati" prefWidth="200.0" text="Registrati" />
+              </buttons>
+            </ButtonBar>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
