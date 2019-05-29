@@ -41,6 +41,7 @@ public class ShopOverviewController {
     private MenuItem menuAggiungi = new MenuItem("Aggiungi Ricambio");
     private MenuItem menuCreaAdmin = new MenuItem("Aggiungi Admin");
     private MenuItem menuAggiungiCategoria = new MenuItem("Aggiungi Categoria");
+    private MenuItem menuAggiungiFornitore = new MenuItem("Aggiungi Fornitore");
 
     @FXML
     private MenuItem esci;
@@ -56,11 +57,14 @@ public class ShopOverviewController {
         if(checkIsAdmin()){
             admin.getItems().add(menuAggiungi);
             admin.getItems().add(menuAggiungiCategoria);
+            admin.getItems().add(menuAggiungiFornitore);
             admin.getItems().add(menuCreaAdmin);
             menuBar.getMenus().add(admin);
         }
         menuAggiungi.setOnAction(event -> {showInserisciRicambio();});
         menuAggiungiCategoria.setOnAction(event -> {showAggiungiCategoria();});
+        menuAggiungiFornitore.setOnAction(event -> {showInserisciFornitore();});
+
     }
 
 
@@ -121,6 +125,32 @@ public class ShopOverviewController {
             dialogStage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private boolean showInserisciFornitore(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/shop/view/InserisciFornitore.fxml"));
+            VBox inserisciFornitore = (VBox) loader.load();
+
+            Stage newDialogStage = new Stage();
+            newDialogStage.setTitle("Inserisci Fornitore");
+            newDialogStage.initOwner(dialogStage);
+            newDialogStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(inserisciFornitore);
+            newDialogStage.setScene(scene);
+
+            InserisciFornitoreController controller = loader.getController();
+            controller.setUser(user);
+            controller.setDialogStage(newDialogStage);
+
+            newDialogStage.showAndWait();
+
+            return controller.isOkayClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
