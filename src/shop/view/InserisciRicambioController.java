@@ -47,7 +47,7 @@ public class InserisciRicambioController {
             Stage dialogStage = this.dialogStage;
             dialogStage.setTitle("Vendita Ricambi");
             Scene scene = new Scene(shopOverview);
-            dialogStage.setScene(scene);
+            dialogStage.setScene(scene); //Provi che funzioni
 
             ShopOverviewController controller = loader.getController();
             controller.setUser(user);
