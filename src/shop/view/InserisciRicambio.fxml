@@ -39,12 +39,12 @@
             <Label styleClass="label-bright" stylesheets="@DarkTheme.css" text="Costo:" GridPane.rowIndex="3" />
             <Label styleClass="label-bright" stylesheets="@DarkTheme.css" text="Categoria:" GridPane.rowIndex="4" />
             <Label styleClass="label-bright" stylesheets="@DarkTheme.css" text="Fornitore:" GridPane.rowIndex="5" />
-            <TextField styleClass="text-field" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" />
-            <TextField styleClass="text-field" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField styleClass="text-field" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField styleClass="text-field" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="nomeProdottoTextField" styleClass="text-field" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" />
+            <TextField fx:id="descrizioneProdottoTextField" styleClass="text-field" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="percentualeScontoTextField" styleClass="text-field" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="costoTextField" styleClass="text-field" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="categoriaComboBox" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ComboBox fx:id="fornitoreComboBox" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
       <BorderPane prefHeight="156.0" prefWidth="798.0">

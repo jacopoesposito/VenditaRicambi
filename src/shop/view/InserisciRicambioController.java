@@ -24,7 +24,7 @@ public class InserisciRicambioController {
     private MainApp mainApp = new MainApp();
     private UserModel user = new UserModel();
     private Stage dialogStage;
-    final ObservableList options = FXCollections.observableArrayList();
+    final ObservableList<String> options = FXCollections.observableArrayList();
 
     @FXML
     private Button cancel;
