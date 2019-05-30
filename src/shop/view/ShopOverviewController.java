@@ -1,12 +1,12 @@
 package shop.view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import shop.MainApp;
 import shop.MysqlConnection;
 import shop.ShopOverview;
+import shop.model.RicambioModel;
 import shop.model.UserModel;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class ShopOverviewController {
     private boolean okClicked = false;
     private UserModel user;
     private MainApp mainApp = new MainApp();
+    private ObservableList<RicambioModel> ricambioList = FXCollections.observableArrayList();
 
 
     @FXML
@@ -50,7 +52,32 @@ public class ShopOverviewController {
     private MenuItem informazioni;
 
     @FXML
-    private void initialize(){}
+    private TableView<RicambioModel> tableView = new TableView<RicambioModel>();
+
+    @FXML
+    private TableColumn<RicambioModel, String> colNomePorodotto;
+
+    @FXML
+    private TableColumn<RicambioModel, String> colFornitoreProdotto;
+
+    @FXML
+    private TableColumn<RicambioModel, String> colCategoriaProdotto;
+
+    @FXML
+    private void initialize(){
+        fillTableView();
+        for (RicambioModel ricambio : ricambioList) {
+            System.out.println(ricambio.toString());
+        }
+
+
+        colNomePorodotto.setCellValueFactory(new PropertyValueFactory<>("nomeProdotto"));
+        colFornitoreProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeFornitore"));
+        colCategoriaProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeCategoria"));
+
+        tableView.setItems(ricambioList);
+
+    }
 
     public void setDialogStage(Stage dialogStage){
         this.dialogStage = dialogStage;
@@ -178,6 +205,34 @@ public class ShopOverviewController {
         catch(IOException e){
             e.printStackTrace();
             return false;
+        }
+    }
+
+    private void fillTableView(){
+        MysqlConnection db = MysqlConnection.getDbCon();
+
+        try{
+            PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT CODICE_PRODOTTO, `NOME_PRODOTTO`, `DESCRIZIONE_PRODOTTO`, `PERCENTUALE_SCONTO`, `COSTO`, `PREZZO_S`, `FK_CODICE_FORNITORE`, `FK_ID_CATEGORIA`, " +
+                    "NOME_CATEGORIA, NOME_FORNITORE FROM `prodotto` " + "join fornitore ON prodotto.FK_CODICE_FORNITORE = fornitore.CODICE_FORNITORE " +
+                    "join categoria ON prodotto.FK_ID_CATEGORIA = categoria.ID_CATEGORIA");
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()){
+                RicambioModel ricambio = new RicambioModel();
+
+                ricambio.setPkProdotto(rs.getString(1));
+                ricambio.setNomeProdotto(rs.getString(2));
+                ricambio.setDescrizioneProdotto(rs.getString(3));
+                ricambio.setPercentualeSconto(rs.getInt(4));
+                ricambio.setCosto(rs.getFloat(5));
+                ricambio.setCostoScontato(rs.getFloat(6));
+                ricambio.setFkFornitore(rs.getString(7));
+                ricambio.setFkCategoria(rs.getString(8));
+                ricambio.setNomeCategoria(rs.getString(9));
+                ricambio.setNomeFornitore(rs.getString(10));
+                ricambioList.add(ricambio);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

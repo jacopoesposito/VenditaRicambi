@@ -9,12 +9,15 @@ public class RicambioModel {
     private float costoScontato;
     private String nomeCategoria;
     private String nomeFornitore;
+    private String pkProdotto;
+    private String fkCategoria;
+    private String fkFornitore;
 
     public RicambioModel(){
 
     }
 
-    public RicambioModel(String nomeProdotto, String descrizioneProdotto, int percentualeSconto, float costo, float costoScontato, String nomeCategoria, String nomeFornitore) {
+    public RicambioModel(String nomeProdotto, String descrizioneProdotto, int percentualeSconto, float costo, float costoScontato, String nomeCategoria, String nomeFornitore, String pkProdotto, String fkCategoria, String fkFornitore) {
         this.nomeProdotto = nomeProdotto;
         this.descrizioneProdotto = descrizioneProdotto;
         this.percentualeSconto = percentualeSconto;
@@ -22,6 +25,16 @@ public class RicambioModel {
         this.costoScontato = costoScontato;
         this.nomeCategoria = nomeCategoria;
         this.nomeFornitore = nomeFornitore;
+        this.pkProdotto = pkProdotto;
+        this.fkCategoria = fkCategoria;
+        this.fkFornitore = fkFornitore;
+    }
+
+    @Override
+    public String toString() {
+        super.toString();
+        return nomeProdotto + " " + pkProdotto;
+
     }
 
     public String getNomeProdotto() {
@@ -78,5 +91,29 @@ public class RicambioModel {
 
     public void setNomeFornitore(String nomeFornitore) {
         this.nomeFornitore = nomeFornitore;
+    }
+
+    public String getPkProdotto() {
+        return pkProdotto;
+    }
+
+    public void setPkProdotto(String pkProdotto) {
+        this.pkProdotto = pkProdotto;
+    }
+
+    public String getFkCategoria() {
+        return fkCategoria;
+    }
+
+    public void setFkCategoria(String fkCategoria) {
+        this.fkCategoria = fkCategoria;
+    }
+
+    public String getFkFornitore() {
+        return fkFornitore;
+    }
+
+    public void setFkFornitore(String fkFornitore) {
+        this.fkFornitore = fkFornitore;
     }
 }

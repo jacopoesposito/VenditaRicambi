@@ -49,7 +49,7 @@
       </GridPane>
       <BorderPane prefHeight="156.0" prefWidth="798.0">
          <left>
-            <Button mnemonicParsing="false" styleClass="background" stylesheets="@DarkTheme.css" text="Aggiungi" BorderPane.alignment="CENTER" />
+            <Button mnemonicParsing="false" styleClass="background" onAction="#handleInserisci" stylesheets="@DarkTheme.css" text="Aggiungi" BorderPane.alignment="CENTER" />
          </left>
          <right>
             <Button fx:id="cancel" mnemonicParsing="false" onAction="#handleCancel" stylesheets="@DarkTheme.css" text="Annulla" BorderPane.alignment="CENTER" />
