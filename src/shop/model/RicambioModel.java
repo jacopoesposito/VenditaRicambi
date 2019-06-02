@@ -12,12 +12,14 @@ public class RicambioModel {
     private String pkProdotto;
     private String fkCategoria;
     private String fkFornitore;
+    private int quantita;
+    private int quantitaAcquistata;
 
     public RicambioModel(){
 
     }
 
-    public RicambioModel(String nomeProdotto, String descrizioneProdotto, int percentualeSconto, float costo, float costoScontato, String nomeCategoria, String nomeFornitore, String pkProdotto, String fkCategoria, String fkFornitore) {
+    public RicambioModel(String nomeProdotto, String descrizioneProdotto, int percentualeSconto, float costo, float costoScontato, String nomeCategoria, String nomeFornitore, String pkProdotto, String fkCategoria, String fkFornitore, int quantita, int quantitaAcquistata) {
         this.nomeProdotto = nomeProdotto;
         this.descrizioneProdotto = descrizioneProdotto;
         this.percentualeSconto = percentualeSconto;
@@ -28,6 +30,7 @@ public class RicambioModel {
         this.pkProdotto = pkProdotto;
         this.fkCategoria = fkCategoria;
         this.fkFornitore = fkFornitore;
+        this.quantita = quantita;
     }
 
     @Override
@@ -115,5 +118,21 @@ public class RicambioModel {
 
     public void setFkFornitore(String fkFornitore) {
         this.fkFornitore = fkFornitore;
+    }
+
+    public int getQuantita() {
+        return quantita;
+    }
+
+    public void setQuantita(int quantita) {
+        this.quantita = quantita;
+    }
+
+    public int getQuantitaAcquistata() {
+        return quantitaAcquistata;
+    }
+
+    public void setQuantitaAcquistata(int quantitaAcquistata) {
+        this.quantitaAcquistata = quantitaAcquistata;
     }
 }

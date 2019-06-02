@@ -48,6 +48,9 @@ public class InserisciRicambioController {
     private TextField costoTextField;
 
     @FXML
+    private TextField quantitaTextField;
+
+    @FXML
     private ComboBox<String> categoriaComboBox = new ComboBox<>();
 
     @FXML
@@ -82,6 +85,7 @@ public class InserisciRicambioController {
             ricambio.setCosto(Float.parseFloat(costoTextField.getText()));
             ricambio.setFkFornitore(inserisciRicambio.selectPkFornitore(fornitoreComboBox.getSelectionModel().getSelectedItem()));
             ricambio.setFkCategoria(inserisciRicambio.selectPkCategoria(categoriaComboBox.getSelectionModel().getSelectedItem()));
+            ricambio.setQuantita(Integer.parseInt(quantitaTextField.getText()));
 
             inserisciRicambio.insertRicambio(ricambio);
             showShopOverview();
@@ -178,6 +182,16 @@ public class InserisciRicambioController {
                 Float.parseFloat(costoTextField.getText());
             } catch (NumberFormatException e){
                 errorMessage += "Inserire un numero per indicare il prezzo del prodotto\n";
+            }
+        }
+        if(quantitaTextField.getText().length() == 0 || quantitaTextField.getText() == null){
+            errorMessage+= "Inserire la quantità del ricambio\n";
+        }
+        else{
+            try{
+                Integer.parseInt(quantitaTextField.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "Inserire un numero intero per indicare la quantita delle scorte\n";
             }
         }
         if(categoriaComboBox.getSelectionModel().getSelectedIndex() == 0){

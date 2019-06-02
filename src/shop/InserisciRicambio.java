@@ -17,7 +17,7 @@ public class InserisciRicambio {
 
         try{
             PreparedStatement preparedStatement = db.conn.prepareStatement("INSERT INTO PRODOTTO (CODICE_PRODOTTO, NOME_PRODOTTO, DESCRIZIONE_PRODOTTO, " +
-                    "PERCENTUALE_SCONTO, COSTO, PREZZO_S, FK_CODICE_FORNITORE, FK_ID_CATEGORIA) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    "PERCENTUALE_SCONTO, COSTO, PREZZO_S, FK_CODICE_FORNITORE, FK_ID_CATEGORIA, QUANTITA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, ricambio.getPkProdotto());
             preparedStatement.setString(2, ricambio.getNomeProdotto());
             preparedStatement.setString(3, ricambio.getDescrizioneProdotto());
@@ -26,6 +26,7 @@ public class InserisciRicambio {
             preparedStatement.setFloat(6, ricambio.getCostoScontato());
             preparedStatement.setString(7, ricambio.getFkFornitore());
             preparedStatement.setString(8, ricambio.getFkCategoria());
+            preparedStatement.setInt(9, ricambio.getQuantita());
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {

@@ -7,8 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import shop.MainApp;
@@ -29,7 +30,11 @@ public class ShopOverviewController {
     private boolean okClicked = false;
     private UserModel user;
     private MainApp mainApp = new MainApp();
+    private MainAppController mainAppController = new MainAppController();
     private ObservableList<RicambioModel> ricambioList = FXCollections.observableArrayList();
+    private ObservableList<RicambioModel> carelloList = FXCollections.observableArrayList();
+
+
 
 
     @FXML
@@ -44,6 +49,30 @@ public class ShopOverviewController {
     private MenuItem menuCreaAdmin = new MenuItem("Aggiungi Admin");
     private MenuItem menuAggiungiCategoria = new MenuItem("Aggiungi Categoria");
     private MenuItem menuAggiungiFornitore = new MenuItem("Aggiungi Fornitore");
+
+    @FXML
+    private Button aggiungi;
+
+    @FXML
+    private Label nomeProdottoText;
+
+    @FXML
+    private Label descrizioneProdottoText;
+
+    @FXML
+    private Label pkProdotto;
+
+    @FXML
+    private Label prezzoScontato;
+
+    @FXML
+    private Label costo;
+
+    @FXML
+    private Label sconto;
+
+    @FXML
+    private Label quantita;
 
     @FXML
     private MenuItem esci;
@@ -77,6 +106,20 @@ public class ShopOverviewController {
 
         tableView.setItems(ricambioList);
 
+        tableView.setOnMousePressed( (MouseEvent event) -> {
+            if(event.getClickCount() == 1){
+                RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
+                System.out.println(ricambio.getCosto());
+                nomeProdottoText.setText(ricambio.getNomeProdotto());
+                descrizioneProdottoText.setText(ricambio.getDescrizioneProdotto());
+                pkProdotto.setText(ricambio.getPkProdotto());
+                prezzoScontato.setText(Float.toString(ricambio.getCostoScontato()));
+                costo.setText(Float.toString(ricambio.getCosto()));
+                sconto.setText(String.valueOf(ricambio.getPercentualeSconto()) + "%");
+                quantita.setText(String.valueOf(ricambio.getQuantita()));
+            }
+
+        });
     }
 
     public void setDialogStage(Stage dialogStage){
@@ -94,7 +137,13 @@ public class ShopOverviewController {
 
     }
 
+    public void setCarelloList(ObservableList<RicambioModel> carelloList) {
+        this.carelloList = carelloList;
+    }
 
+    public ObservableList<RicambioModel> getCarrelloList() {
+        return carelloList;
+    }
 
     public boolean isOkClicked() { return okClicked;
     }
@@ -105,14 +154,46 @@ public class ShopOverviewController {
 
     @FXML
     private void handleAcquista(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/shop/view/Carrello.fxml"));
+            VBox carrello = (VBox) loader.load();
+
+            dialogStage.setTitle("Carrello");
+            Scene scene = new Scene(carrello);
+            dialogStage.setScene(scene);
+
+            CarrelloController controllerCarrello = loader.getController();
+            controllerCarrello.setUser(user);
+            controllerCarrello.setDialogStage(dialogStage);
+
+
+            dialogStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @FXML
+    private void handleAggiungi(){
+        if(tableView.getSelectionModel().getSelectedItem().getQuantita() != 0){
+            RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
+            ricambio.setQuantitaAcquistata(ricambio.getQuantitaAcquistata() + 1);
+            ricambio.setQuantita(ricambio.getQuantita() - 1);
+            carelloList.add(ricambio);
+        }
+        else{
+            mainAppController.alert("Prodotto non disponibile!", "Errore", "Il prodotto da lei selezionato " +
+                    "non è al momento disponibile.");
+        }
     }
 
     @FXML
     private void handleExit(){
         mainApp.start(dialogStage);
     }
-
-
 
     private boolean checkIsAdmin(){
         int admin;
@@ -213,7 +294,7 @@ public class ShopOverviewController {
 
         try{
             PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT CODICE_PRODOTTO, `NOME_PRODOTTO`, `DESCRIZIONE_PRODOTTO`, `PERCENTUALE_SCONTO`, `COSTO`, `PREZZO_S`, `FK_CODICE_FORNITORE`, `FK_ID_CATEGORIA`, " +
-                    "NOME_CATEGORIA, NOME_FORNITORE FROM `prodotto` " + "join fornitore ON prodotto.FK_CODICE_FORNITORE = fornitore.CODICE_FORNITORE " +
+                    "NOME_CATEGORIA, NOME_FORNITORE, QUANTITA FROM `prodotto` " + "join fornitore ON prodotto.FK_CODICE_FORNITORE = fornitore.CODICE_FORNITORE " +
                     "join categoria ON prodotto.FK_ID_CATEGORIA = categoria.ID_CATEGORIA");
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
@@ -229,6 +310,7 @@ public class ShopOverviewController {
                 ricambio.setFkCategoria(rs.getString(8));
                 ricambio.setNomeCategoria(rs.getString(9));
                 ricambio.setNomeFornitore(rs.getString(10));
+                ricambio.setQuantita(rs.getInt(11));
                 ricambioList.add(ricambio);
             }
         } catch (SQLException e) {
