@@ -95,10 +95,6 @@ public class ShopOverviewController {
     @FXML
     private void initialize(){
         fillTableView();
-        for (RicambioModel ricambio : ricambioList) {
-            System.out.println(ricambio.toString());
-        }
-
 
         colNomePorodotto.setCellValueFactory(new PropertyValueFactory<>("nomeProdotto"));
         colFornitoreProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeFornitore"));
@@ -141,10 +137,6 @@ public class ShopOverviewController {
         this.carelloList = carelloList;
     }
 
-    public ObservableList<RicambioModel> getCarrelloList() {
-        return carelloList;
-    }
-
     public boolean isOkClicked() { return okClicked;
     }
 
@@ -166,6 +158,7 @@ public class ShopOverviewController {
             CarrelloController controllerCarrello = loader.getController();
             controllerCarrello.setUser(user);
             controllerCarrello.setDialogStage(dialogStage);
+            controllerCarrello.setCarrelloList(carelloList);
 
 
             dialogStage.show();
@@ -182,7 +175,10 @@ public class ShopOverviewController {
             RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
             ricambio.setQuantitaAcquistata(ricambio.getQuantitaAcquistata() + 1);
             ricambio.setQuantita(ricambio.getQuantita() - 1);
-            carelloList.add(ricambio);
+            if(!carelloList.contains(ricambio)) {
+                carelloList.add(ricambio);
+            }
+            quantita.setText(String.valueOf(ricambio.getQuantita()));
         }
         else{
             mainAppController.alert("Prodotto non disponibile!", "Errore", "Il prodotto da lei selezionato " +

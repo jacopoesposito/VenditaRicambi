@@ -53,17 +53,7 @@ public class CarrelloController {
 
     @FXML
     private void initialize(){
-        ObservableList<RicambioModel> carrelloList = shopOverviewController.getCarrelloList();
-        for (RicambioModel ricambio : carrelloList) {
-            System.out.println(ricambio.toString());
-        }
-        colNomePorodotto.setCellValueFactory(new PropertyValueFactory<>("nomeProdotto"));
-        colFornitoreProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeFornitore"));
-        colCategoriaProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeCategoria"));
-        colQuantitaProdotto.setCellValueFactory(new PropertyValueFactory<>("quantita"));
-        colPrezzoProdotto.setCellValueFactory(new PropertyValueFactory<>("costoScontato"));
 
-        tableView.setItems(carrelloList);
     }
 
     @FXML
@@ -81,6 +71,7 @@ public class CarrelloController {
 
     public void setCarrelloList(ObservableList<RicambioModel> carrelloList) {
         this.carrelloList = carrelloList;
+        setTableView();
     }
 
     private void showShopOverview(){
@@ -103,5 +94,19 @@ public class CarrelloController {
         catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    @SuppressWarnings("Duplicates")
+    private void setTableView(){
+        for (RicambioModel ricambio : carrelloList) {
+            System.out.println(ricambio.toString());
+        }
+        colNomePorodotto.setCellValueFactory(new PropertyValueFactory<>("nomeProdotto"));
+        colFornitoreProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeFornitore"));
+        colCategoriaProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeCategoria"));
+        colQuantitaProdotto.setCellValueFactory(new PropertyValueFactory<>("quantitaAcquistata"));
+        colPrezzoProdotto.setCellValueFactory(new PropertyValueFactory<>("costoScontato"));
+
+        tableView.setItems(carrelloList);
     }
 }

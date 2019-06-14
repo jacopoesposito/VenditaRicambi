@@ -135,4 +135,20 @@ public class RicambioModel {
     public void setQuantitaAcquistata(int quantitaAcquistata) {
         this.quantitaAcquistata = quantitaAcquistata;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof RicambioModel)) {
+            return false;
+        }
+        RicambioModel ricambio = (RicambioModel) o;
+
+        // persons.id.equals() leads to the default implementation in Object
+        // --> instead use this one.
+        // The Property classes have their own isEqualTo method
+        // with get(), you will get your simple boolean from the returned BooleanBinding
+        return ricambio.pkProdotto.equals(pkProdotto);
+
+    }
 }
