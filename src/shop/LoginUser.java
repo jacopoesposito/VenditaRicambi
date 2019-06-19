@@ -10,6 +10,7 @@ import java.util.List;
 
 public class LoginUser implements userDAO {
 
+    private String codiceUtente;
     private String mail;
     private String nome;
     private String cognome;
@@ -27,6 +28,7 @@ public class LoginUser implements userDAO {
             preparedStatement.setString(1, mail);
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
+                codiceUtente = rs.getString("CODICE_UTENTE");
                 mail = rs.getString("MAIL");
                 nome = rs.getString("NOME");
                 cognome = rs.getString("COGNOME");
@@ -40,7 +42,7 @@ public class LoginUser implements userDAO {
             e.printStackTrace();
         }
 
-        UserModel user = new UserModel(mail, nome, cognome, password, password, numeroCivico, nomeVia, citta);
+        UserModel user = new UserModel(mail, nome, cognome, password, password, numeroCivico, nomeVia, citta, codiceUtente);
         System.out.println(user.getNome());
         return user;
     }

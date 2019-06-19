@@ -5,11 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import shop.model.RicambioModel;
 import shop.model.UserModel;
@@ -17,7 +16,8 @@ import shop.model.UserModel;
 import java.io.IOException;
 
 public class CarrelloController {
-    
+
+    private MainAppController mainAppController = new MainAppController();
     private UserModel user = new UserModel();
     private ShopOverviewController shopOverviewController = new ShopOverviewController();
     private Stage dialogStage = new Stage();
@@ -32,6 +32,18 @@ public class CarrelloController {
 
     @FXML
     private Button acquista;
+
+    @FXML
+    private RadioButton cartaCredito;
+
+    @FXML
+    private RadioButton contanti;
+
+    @FXML
+    private RadioButton bancomat;
+
+    @FXML
+    private Label totale;
 
     @FXML
     private TableView<RicambioModel> tableView;
@@ -53,12 +65,38 @@ public class CarrelloController {
 
     @FXML
     private void initialize(){
-
     }
 
     @FXML
     private void handleCancell(){
         showShopOverview();
+    }
+
+    @FXML
+    private void handleElimina() {
+        RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
+        if (ricambio != null) {
+            if (ricambio.getQuantitaAcquistata() >= 1) {
+                ricambio.setQuantitaAcquistata(ricambio.getQuantitaAcquistata() - 1);
+                if (ricambio.getQuantitaAcquistata() == 0) {
+                    carrelloList.remove(ricambio);
+                }
+                tableView.refresh();
+                totale.setText(Float.toString(calcoloTotale(carrelloList)));
+            }
+        }
+    }
+
+    @FXML
+    private void handleAcquista(){
+        if(!carrelloList.isEmpty()){
+            if(cartaCredito.isSelected()) {
+                showPagamentoCC();
+            }
+        }
+        else{
+            mainAppController.alert("Non hai prodotti nel carello", "Errore", "Nessun prodotto inserito");
+        }
     }
 
     public void setUser(UserModel user) {
@@ -72,6 +110,7 @@ public class CarrelloController {
     public void setCarrelloList(ObservableList<RicambioModel> carrelloList) {
         this.carrelloList = carrelloList;
         setTableView();
+        totale.setText(Float.toString(calcoloTotale(carrelloList)));
     }
 
     private void showShopOverview(){
@@ -88,10 +127,34 @@ public class CarrelloController {
             ShopOverviewController controller = loader.getController();
             controller.setUser(user);
             controller.setCarelloList(carrelloList);
+            controller.checkQuantita();
             controller.setDialogStage(dialogStage);
+
             dialogStage.show();
         }
         catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void showPagamentoCC(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/shop/view/PagamentoCartaCredito.fxml"));
+            VBox pagamentoCartaCredito = (VBox) loader.load();
+
+            dialogStage.setTitle("Pagamento con Cartda di credito");
+            Scene scene = new Scene(pagamentoCartaCredito);
+            dialogStage.setScene(scene);
+
+            PagamentoCCController controller = loader.getController();
+            controller.setUser(user);
+            controller.setCarrelloList(carrelloList);
+            controller.setTotale(calcoloTotale(carrelloList));
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -108,5 +171,14 @@ public class CarrelloController {
         colPrezzoProdotto.setCellValueFactory(new PropertyValueFactory<>("costoScontato"));
 
         tableView.setItems(carrelloList);
+    }
+
+    private float calcoloTotale(ObservableList<RicambioModel> carelloList){
+        float totale = 0.0F;
+        for(RicambioModel ricambio : carelloList){
+            totale += ricambio.getCostoScontato() * ricambio.getQuantitaAcquistata();
+            System.out.println(totale);
+        }
+        return totale;
     }
 }

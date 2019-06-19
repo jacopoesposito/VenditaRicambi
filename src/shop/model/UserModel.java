@@ -10,6 +10,7 @@ public class UserModel {
     private String reinserisciPassword;
     private int numeroCivico;
     private String nomeVia;
+    private String codiceUtente;
 
     public String getMail() {
         return mail;
@@ -75,6 +76,14 @@ public class UserModel {
         this.citta = citta;
     }
 
+    public String getCodiceUtente() {
+        return codiceUtente;
+    }
+
+    public void setCodiceUtente(String codiceUtente) {
+        this.codiceUtente = codiceUtente;
+    }
+
     private String citta;
 
     public UserModel(){
@@ -82,7 +91,7 @@ public class UserModel {
     }
 
     public UserModel(String mail, String nome, String cognome, String password, String reinserisciPassword,
-                     int numeroCivico, String nomeVia, String citta){
+                     int numeroCivico, String nomeVia, String citta, String codiceUtente){
         this.nome = nome;
         this.cognome = cognome;
         this.mail = mail;
@@ -91,6 +100,7 @@ public class UserModel {
         this.numeroCivico = numeroCivico;
         this.nomeVia = nomeVia;
         this.citta = citta;
+        this.codiceUtente = codiceUtente;
     }
 
 

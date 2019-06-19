@@ -30,22 +30,22 @@
       </TableView>
       <HBox prefHeight="39.0" prefWidth="798.0">
          <children>
-            <Label styleClass="label-bright" text="Totale Spesa:" />
-            <Label />
+            <Label styleClass="label-bright" text="Totale Spesa:   " />
+            <Label fx:id="totale" prefHeight="21.0" prefWidth="139.0" styleClass="label-bright" />
          </children>
       </HBox>
       <BorderPane prefHeight="98.0" prefWidth="798.0" stylesheets="@DarkTheme.css">
          <left>
-            <RadioButton mnemonicParsing="false" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Carta di Credito" BorderPane.alignment="CENTER">
+            <RadioButton fx:id="cartaCredito" mnemonicParsing="false" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Carta di Credito" BorderPane.alignment="CENTER">
                <toggleGroup>
                   <ToggleGroup fx:id="selectPagamentoMode" />
                </toggleGroup></RadioButton>
          </left>
          <center>
-            <RadioButton mnemonicParsing="false" selected="true" styleClass="label-bright" text="Contanti" toggleGroup="$selectPagamentoMode" BorderPane.alignment="CENTER" />
+            <RadioButton fx:id="contanti" mnemonicParsing="false" selected="true" styleClass="label-bright" text="Contanti" toggleGroup="$selectPagamentoMode" BorderPane.alignment="CENTER" />
          </center>
          <right>
-            <RadioButton mnemonicParsing="false" styleClass="label-bright" text="Bancomat" toggleGroup="$selectPagamentoMode" BorderPane.alignment="CENTER" />
+            <RadioButton fx:id="bancomat" mnemonicParsing="false" styleClass="label-bright" text="Bancomat" toggleGroup="$selectPagamentoMode" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
       <BorderPane prefHeight="98.0" prefWidth="798.0">
@@ -53,10 +53,10 @@
             <Button fx:id="annulla" mnemonicParsing="false" onAction="#handleCancell" styleClass="background" stylesheets="@DarkTheme.css" text="Annulla" BorderPane.alignment="CENTER" />
          </left>
          <right>
-            <Button fx:id="acquista" mnemonicParsing="false" stylesheets="@DarkTheme.css" text="Acquista" BorderPane.alignment="CENTER" />
+            <Button fx:id="acquista" mnemonicParsing="false" onAction="#handleAcquista" stylesheets="@DarkTheme.css" text="Acquista" BorderPane.alignment="CENTER" />
          </right>
          <center>
-            <Button fx:id="elimina" mnemonicParsing="false" styleClass="background" stylesheets="@DarkTheme.css" text="Elimina" BorderPane.alignment="CENTER" />
+            <Button fx:id="elimina" mnemonicParsing="false" onAction="#handleElimina" styleClass="background" stylesheets="@DarkTheme.css" text="Elimina" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </children>

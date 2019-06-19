@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 
 public class ShopOverviewController {
 
@@ -95,6 +96,7 @@ public class ShopOverviewController {
     @FXML
     private void initialize(){
         fillTableView();
+        //non va
 
         colNomePorodotto.setCellValueFactory(new PropertyValueFactory<>("nomeProdotto"));
         colFornitoreProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeFornitore"));
@@ -105,16 +107,17 @@ public class ShopOverviewController {
         tableView.setOnMousePressed( (MouseEvent event) -> {
             if(event.getClickCount() == 1){
                 RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
-                System.out.println(ricambio.getCosto());
-                nomeProdottoText.setText(ricambio.getNomeProdotto());
-                descrizioneProdottoText.setText(ricambio.getDescrizioneProdotto());
-                pkProdotto.setText(ricambio.getPkProdotto());
-                prezzoScontato.setText(Float.toString(ricambio.getCostoScontato()));
-                costo.setText(Float.toString(ricambio.getCosto()));
-                sconto.setText(String.valueOf(ricambio.getPercentualeSconto()) + "%");
-                quantita.setText(String.valueOf(ricambio.getQuantita()));
+                if(ricambio != null) {
+                    //System.out.println(ricambio.getCosto());
+                    nomeProdottoText.setText(ricambio.getNomeProdotto());
+                    descrizioneProdottoText.setText(ricambio.getDescrizioneProdotto());
+                    pkProdotto.setText(ricambio.getPkProdotto());
+                    prezzoScontato.setText(Float.toString(ricambio.getCostoScontato()));
+                    costo.setText(Float.toString(ricambio.getCosto()));
+                    sconto.setText(String.valueOf(ricambio.getPercentualeSconto()) + "%");
+                    quantita.setText(String.valueOf(ricambio.getQuantita()));
+                }
             }
-
         });
     }
 
@@ -144,6 +147,7 @@ public class ShopOverviewController {
         this.user = user;
     }
 
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleAcquista(){
         try {
@@ -171,18 +175,19 @@ public class ShopOverviewController {
 
     @FXML
     private void handleAggiungi(){
-        if(tableView.getSelectionModel().getSelectedItem().getQuantita() != 0){
-            RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
-            ricambio.setQuantitaAcquistata(ricambio.getQuantitaAcquistata() + 1);
-            ricambio.setQuantita(ricambio.getQuantita() - 1);
-            if(!carelloList.contains(ricambio)) {
-                carelloList.add(ricambio);
+        RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
+        if(ricambio != null) {
+            if (ricambio.getQuantita() != 0) {
+                ricambio.setQuantitaAcquistata(ricambio.getQuantitaAcquistata() + 1);
+                ricambio.setQuantita(ricambio.getQuantita() - 1);
+                if (!carelloList.contains(ricambio)) {
+                    carelloList.add(ricambio);
+                }
+                quantita.setText(String.valueOf(ricambio.getQuantita()));
+            } else {
+                mainAppController.alert("Prodotto non disponibile!", "Errore", "Il prodotto da lei selezionato " +
+                        "non è al momento disponibile.");
             }
-            quantita.setText(String.valueOf(ricambio.getQuantita()));
-        }
-        else{
-            mainAppController.alert("Prodotto non disponibile!", "Errore", "Il prodotto da lei selezionato " +
-                    "non è al momento disponibile.");
         }
     }
 
@@ -313,4 +318,19 @@ public class ShopOverviewController {
             e.printStackTrace();
         }
     }
+
+    public void checkQuantita(){
+            for(RicambioModel ricambioAggiunto : carelloList) {
+                if (ricambioList.contains(ricambioAggiunto)) {
+                    int quantita = ricambioList.get(ricambioList.indexOf(ricambioAggiunto)).getQuantita() - ricambioAggiunto.getQuantitaAcquistata();
+                    if(quantita > 0){
+                        ricambioList.get(ricambioList.indexOf(ricambioAggiunto)).setQuantita(quantita);
+                    }
+                    else{
+                        ricambioList.get(ricambioList.indexOf(ricambioAggiunto)).setQuantita(0);
+                    }
+                }
+            }
+    }
 }
+
