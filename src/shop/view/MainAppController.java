@@ -114,4 +114,14 @@ public class MainAppController {
 
     }
 
+    public void confirm(String message, String title, String headerText){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initOwner(dialogStage);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
+
 }

@@ -96,7 +96,6 @@ public class ShopOverviewController {
     @FXML
     private void initialize(){
         fillTableView();
-        //non va
 
         colNomePorodotto.setCellValueFactory(new PropertyValueFactory<>("nomeProdotto"));
         colFornitoreProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeFornitore"));
@@ -133,7 +132,7 @@ public class ShopOverviewController {
         menuAggiungi.setOnAction(event -> {showInserisciRicambio();});
         menuAggiungiCategoria.setOnAction(event -> {showAggiungiCategoria();});
         menuAggiungiFornitore.setOnAction(event -> {showInserisciFornitore();});
-
+        menuCreaAdmin.setOnAction(event -> {showAggiungiAdmin();});
     }
 
     public void setCarelloList(ObservableList<RicambioModel> carelloList) {
@@ -237,6 +236,7 @@ public class ShopOverviewController {
         }
     }
 
+    @SuppressWarnings("Duplicates")
     private boolean showInserisciFornitore(){
         try{
             FXMLLoader loader = new FXMLLoader();
@@ -263,6 +263,7 @@ public class ShopOverviewController {
         }
     }
 
+    @SuppressWarnings("Duplicates")
     private boolean showAggiungiCategoria() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -270,7 +271,7 @@ public class ShopOverviewController {
             VBox inserisciCategoria = (VBox) loader.load();
 
             Stage newDialogStage = new Stage();
-            newDialogStage.setTitle("Inserisci Cateegoria");
+            newDialogStage.setTitle("Inserisci Categoria");
             newDialogStage.initOwner(dialogStage);
             newDialogStage.initModality(Modality.WINDOW_MODAL);
             Scene scene = new Scene(inserisciCategoria);
@@ -285,6 +286,33 @@ public class ShopOverviewController {
             return controller.isOkayClicKed();
         }
         catch(IOException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @SuppressWarnings("Duplicates")
+    private boolean showAggiungiAdmin() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/shop/view/InserisciAdmin.fxml"));
+            VBox inserisciAdmin = (VBox) loader.load();
+
+            Stage newDialogStage = new Stage();
+            newDialogStage.setTitle("Aggiungi Admin");
+            newDialogStage.initOwner(dialogStage);
+            newDialogStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(inserisciAdmin);
+            newDialogStage.setScene(scene);
+
+            InserisciAdminController controller = loader.getController();
+            controller.setUser(user);
+            controller.setDialogStage(newDialogStage);
+
+            newDialogStage.showAndWait();
+
+            return controller.isOkayClicKed();
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }

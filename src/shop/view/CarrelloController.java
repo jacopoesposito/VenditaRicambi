@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import shop.ContantiStrategy;
 import shop.model.RicambioModel;
 import shop.model.UserModel;
 
@@ -19,7 +20,6 @@ public class CarrelloController {
 
     private MainAppController mainAppController = new MainAppController();
     private UserModel user = new UserModel();
-    private ShopOverviewController shopOverviewController = new ShopOverviewController();
     private Stage dialogStage = new Stage();
     private RicambioModel ricambio = new RicambioModel();
     private ObservableList<RicambioModel> carrelloList = FXCollections.observableArrayList();
@@ -93,6 +93,14 @@ public class CarrelloController {
             if(cartaCredito.isSelected()) {
                 showPagamentoCC();
             }
+            if(bancomat.isSelected()) {
+                showPagamentoBM();
+            }
+            if(contanti.isSelected()){
+                ContantiStrategy contanti = new ContantiStrategy();
+                contanti.paga(calcoloTotale(carrelloList), carrelloList, user);
+                mainAppController.confirm("Pagamento in contanti effettuato", "Pagamento in Contanti", "Grazie e arrivederci");
+            }
         }
         else{
             mainAppController.alert("Non hai prodotti nel carello", "Errore", "Nessun prodotto inserito");
@@ -113,7 +121,8 @@ public class CarrelloController {
         totale.setText(Float.toString(calcoloTotale(carrelloList)));
     }
 
-    private void showShopOverview(){
+    @SuppressWarnings("Duplicates")
+    public void showShopOverview(){
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/shop/view/PersonOverview.fxml"));
@@ -148,6 +157,28 @@ public class CarrelloController {
             dialogStage.setScene(scene);
 
             PagamentoCCController controller = loader.getController();
+            controller.setUser(user);
+            controller.setCarrelloList(carrelloList);
+            controller.setTotale(calcoloTotale(carrelloList));
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showPagamentoBM(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/shop/view/PagamentoBancomat.fxml"));
+            VBox pagamentoBancomat = (VBox) loader.load();
+
+            dialogStage.setTitle("Pagamento con Bancomat");
+            Scene scene = new Scene(pagamentoBancomat);
+            dialogStage.setScene(scene);
+
+            PagamentoBMController controller = loader.getController();
             controller.setUser(user);
             controller.setCarrelloList(carrelloList);
             controller.setTotale(calcoloTotale(carrelloList));

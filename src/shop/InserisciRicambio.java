@@ -82,4 +82,22 @@ public class InserisciRicambio {
         return pkCategoria;
     }
 
+    public int selectQuantitaRicambio(RicambioModel ricambio){
+        int quantitaRicambioDB = 0;
+        MysqlConnection db = MysqlConnection.getDbCon();
+        try{
+            PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT QUANTITA FROM PRODOTTO WHERE CODICE_PRODOTTO = ?");
+            preparedStatement.setString(1, ricambio.getPkProdotto());
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()){
+                quantitaRicambioDB = rs.getInt("QUANTITA");
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return quantitaRicambioDB;
+    }
+
 }

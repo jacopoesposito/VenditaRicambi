@@ -11,6 +11,7 @@ public class UserModel {
     private int numeroCivico;
     private String nomeVia;
     private String codiceUtente;
+    private int admin;
 
     public String getMail() {
         return mail;
@@ -84,9 +85,19 @@ public class UserModel {
         this.codiceUtente = codiceUtente;
     }
 
+    public int getAdmin(){return admin;}
+
+    public void setAdmin(int admin){
+        this.admin = admin;
+    }
+
     private String citta;
 
-    public UserModel(){
+    public UserModel() {
+
+    }
+
+    public UserModel(String nome, String cognome, String codiceUtente, String admin){
 
     }
 
