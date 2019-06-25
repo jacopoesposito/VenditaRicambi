@@ -5,8 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import shop.InserisciAdmin;
 import shop.MysqlConnection;
 import shop.model.UserModel;
 
@@ -33,31 +35,28 @@ public class InserisciAdminController {
 
     @FXML
     private void handleInserisci(){
+        user = userComboBox.getSelectionModel().getSelectedItem();
+        if(user != null){
+            InserisciAdmin admin = new InserisciAdmin();
+            admin.inserisciAdmin(user.getCodiceUtente());
+            dialogStage.close();
+        }
+        else{
+            mainAppController.alert("Seleziona un utente!", "Errore", "Errore");
+        }
 
     }
 
     @FXML
     private void handleCancel(){
-
+        dialogStage.close();
     }
 
     @FXML
     public void initialize(){
-        StringConverter<UserModel> converter = new StringConverter<UserModel>() {
-            @Override
-            public String toString(UserModel userModel) {
-                return userModel.getNome() + " " + userModel.getCognome();
-            }
 
-            @Override
-            public UserModel fromString(String s) {
-                return null;
-            }
-        };
         fillUserCB();
 
-        //userComboBox.getItems().add(0, "Seleziona un Utente");
-        userComboBox.setConverter(converter);
         userComboBox.getItems().addAll(options);
         userComboBox.setMaxHeight(30);
 

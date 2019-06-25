@@ -14,6 +14,7 @@ public class RicambioModel {
     private String fkFornitore;
     private int quantita;
     private int quantitaAcquistata;
+    private int visibilita;
 
     public RicambioModel(){
 
@@ -135,6 +136,10 @@ public class RicambioModel {
     public void setQuantitaAcquistata(int quantitaAcquistata) {
         this.quantitaAcquistata = quantitaAcquistata;
     }
+
+    public int getVisibilita(){return visibilita;}
+
+    public void setVisibilita(int visibilita){this.visibilita = visibilita;}
 
     @Override
     public boolean equals(Object o) {

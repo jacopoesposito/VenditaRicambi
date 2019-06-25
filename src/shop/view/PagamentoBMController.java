@@ -69,7 +69,6 @@ public class PagamentoBMController extends PagamentiElettronici {
     @FXML
     private void handleCancell(){
         annullaOperazione(user, dialogStage, carrelloList);
-
     }
 
 

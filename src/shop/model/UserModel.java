@@ -114,5 +114,9 @@ public class UserModel {
         this.codiceUtente = codiceUtente;
     }
 
+    public String toString(){
+        return nome +  " " + cognome;
+    }
+
 
 }

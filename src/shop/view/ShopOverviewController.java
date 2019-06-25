@@ -50,6 +50,7 @@ public class ShopOverviewController {
     private MenuItem menuCreaAdmin = new MenuItem("Aggiungi Admin");
     private MenuItem menuAggiungiCategoria = new MenuItem("Aggiungi Categoria");
     private MenuItem menuAggiungiFornitore = new MenuItem("Aggiungi Fornitore");
+    private MenuItem menuRimuoviProdotto = new MenuItem("Rimuovi Prodotto");
 
     @FXML
     private Button aggiungi;
@@ -127,12 +128,14 @@ public class ShopOverviewController {
             admin.getItems().add(menuAggiungiCategoria);
             admin.getItems().add(menuAggiungiFornitore);
             admin.getItems().add(menuCreaAdmin);
+            admin.getItems().add(menuRimuoviProdotto);
             menuBar.getMenus().add(admin);
         }
         menuAggiungi.setOnAction(event -> {showInserisciRicambio();});
         menuAggiungiCategoria.setOnAction(event -> {showAggiungiCategoria();});
         menuAggiungiFornitore.setOnAction(event -> {showInserisciFornitore();});
         menuCreaAdmin.setOnAction(event -> {showAggiungiAdmin();});
+        menuRimuoviProdotto.setOnAction(event -> {showRimuoviProdotto();});
     }
 
     public void setCarelloList(ObservableList<RicambioModel> carelloList) {
@@ -318,12 +321,39 @@ public class ShopOverviewController {
         }
     }
 
+    @SuppressWarnings("Duplicates")
+    public boolean showRimuoviProdotto(){
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/shop/view/RimuoviRicambio.fxml"));
+                VBox rimuoviRicambio = (VBox) loader.load();
+
+                Stage newDialogStage = new Stage();
+                newDialogStage.setTitle("Aggiungi Admin");
+                newDialogStage.initOwner(dialogStage);
+                newDialogStage.initModality(Modality.WINDOW_MODAL);
+                Scene scene = new Scene(rimuoviRicambio);
+                newDialogStage.setScene(scene);
+
+                RimuoviRicambioController controller = loader.getController();
+                controller.setUser(user);
+                controller.setDialogStage(newDialogStage);
+
+                newDialogStage.showAndWait();
+
+                return controller.isOkayClicKed();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+    }
+
     private void fillTableView(){
         MysqlConnection db = MysqlConnection.getDbCon();
 
         try{
             PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT CODICE_PRODOTTO, `NOME_PRODOTTO`, `DESCRIZIONE_PRODOTTO`, `PERCENTUALE_SCONTO`, `COSTO`, `PREZZO_S`, `FK_CODICE_FORNITORE`, `FK_ID_CATEGORIA`, " +
-                    "NOME_CATEGORIA, NOME_FORNITORE, QUANTITA FROM `prodotto` " + "join fornitore ON prodotto.FK_CODICE_FORNITORE = fornitore.CODICE_FORNITORE " +
+                    "NOME_CATEGORIA, NOME_FORNITORE, QUANTITA, VISIBILE FROM `prodotto` " + "join fornitore ON prodotto.FK_CODICE_FORNITORE = fornitore.CODICE_FORNITORE " +
                     "join categoria ON prodotto.FK_ID_CATEGORIA = categoria.ID_CATEGORIA");
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
@@ -340,7 +370,10 @@ public class ShopOverviewController {
                 ricambio.setNomeCategoria(rs.getString(9));
                 ricambio.setNomeFornitore(rs.getString(10));
                 ricambio.setQuantita(rs.getInt(11));
-                ricambioList.add(ricambio);
+                ricambio.setVisibilita(rs.getInt(12));
+                if(ricambio.getVisibilita() == 0) {
+                    ricambioList.add(ricambio);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
