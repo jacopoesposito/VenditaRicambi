@@ -84,11 +84,11 @@ abstract class PagamentiElettronici {
             try{
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 parsed = formatter.parse(dataScadenzaTextField.getText());
+                if(parsed.before(Calendar.getInstance().getTime())){
+                    errorMessage += "La seguente carta di credito è già scaduta";
+                }
             } catch (ParseException e) {
                 errorMessage += "inserisci la data nel formato GIORNO/MESE/ANNO Esempio: 18/06/2019\n";
-            }
-            if(parsed.before(Calendar.getInstance().getTime())){
-                errorMessage += "La seguente carta di credito è già scaduta";
             }
         }
         return errorMessage;

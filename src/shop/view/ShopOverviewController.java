@@ -51,6 +51,7 @@ public class ShopOverviewController {
     private MenuItem menuAggiungiCategoria = new MenuItem("Aggiungi Categoria");
     private MenuItem menuAggiungiFornitore = new MenuItem("Aggiungi Fornitore");
     private MenuItem menuRimuoviProdotto = new MenuItem("Rimuovi Prodotto");
+    private MenuItem menuVisualizzaVendite = new MenuItem("Visualizza Stato Vendite");
 
     @FXML
     private Button aggiungi;
@@ -129,6 +130,7 @@ public class ShopOverviewController {
             admin.getItems().add(menuAggiungiFornitore);
             admin.getItems().add(menuCreaAdmin);
             admin.getItems().add(menuRimuoviProdotto);
+            admin.getItems().add(menuVisualizzaVendite);
             menuBar.getMenus().add(admin);
         }
         menuAggiungi.setOnAction(event -> {showInserisciRicambio();});
@@ -136,6 +138,7 @@ public class ShopOverviewController {
         menuAggiungiFornitore.setOnAction(event -> {showInserisciFornitore();});
         menuCreaAdmin.setOnAction(event -> {showAggiungiAdmin();});
         menuRimuoviProdotto.setOnAction(event -> {showRimuoviProdotto();});
+        menuVisualizzaVendite.setOnAction(event -> {showVisualizzaVendite();});
     }
 
     public void setCarelloList(ObservableList<RicambioModel> carelloList) {
@@ -347,6 +350,36 @@ public class ShopOverviewController {
                 return false;
             }
     }
+
+    @SuppressWarnings("Duplicates")
+    public boolean showVisualizzaVendite(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/shop/view/VisualizzaVendite.fxml"));
+            VBox visualizzaVendite = (VBox) loader.load();
+
+            Stage newDialogStage = new Stage();
+            newDialogStage.setTitle("Visualizza Stato Vendite");
+            newDialogStage.initOwner(dialogStage);
+            newDialogStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(visualizzaVendite);
+            newDialogStage.setScene(scene);
+
+            VisualizzaVenditeController controller = loader.getController();
+            controller.setUser(user);
+            controller.setDialogStage(newDialogStage);
+
+            newDialogStage.showAndWait();
+
+            return controller.isOkayClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
 
     private void fillTableView(){
         MysqlConnection db = MysqlConnection.getDbCon();
