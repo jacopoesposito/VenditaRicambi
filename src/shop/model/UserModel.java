@@ -3,6 +3,9 @@ package shop.model;
 
 public class UserModel {
 
+    //La presente classe rappressenta un utente del nostro applicativo, vengono di seguito descritti i campi atti alla
+    //descrizione di un singolo utente e tutti i metodi neccessari per operare su di essi
+
     private String mail;
     private String nome;
     private String cognome;
@@ -114,6 +117,7 @@ public class UserModel {
         this.codiceUtente = codiceUtente;
     }
 
+    //Override del metodo toString per far sì che restituisse il nome e il cognome dell'utente.
     public String toString(){
         return nome +  " " + cognome;
     }

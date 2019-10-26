@@ -81,6 +81,9 @@ public class ShopOverviewController {
     private MenuItem esci;
 
     @FXML
+    private MenuItem assemblaAuto;
+
+    @FXML
     private MenuItem informazioni;
 
     @FXML
@@ -194,6 +197,29 @@ public class ShopOverviewController {
                         "non è al momento disponibile.");
             }
         }
+    }
+
+    @FXML
+    private void handleAssembla(){
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/shop/view/ComponiAuto.fxml"));
+            VBox componiAuto = (VBox) loader.load();
+
+            dialogStage.setTitle("Componi Auto");
+            Scene scene = new Scene(componiAuto);
+            dialogStage.setScene(scene);
+
+            ComponiAutoController controllerComponi = loader.getController();
+            controllerComponi.setUser(user);
+            controllerComponi.setDialogStage(dialogStage);
+
+            dialogStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -380,7 +406,7 @@ public class ShopOverviewController {
     }
 
 
-
+    @SuppressWarnings("Duplicates")
     private void fillTableView(){
         MysqlConnection db = MysqlConnection.getDbCon();
 

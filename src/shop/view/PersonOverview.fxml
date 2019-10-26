@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shop.view.ShopOverviewController">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shop.view.ShopOverviewController">
    <children>
       <SplitPane dividerPositions="0.5" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
@@ -80,8 +80,9 @@
         <menus>
           <Menu mnemonicParsing="false" text="Account">
             <items>
-              <MenuItem fx:id="esci" mnemonicParsing="false" onAction="#handleExit" text="Esci" />
+                  <MenuItem fx:id="assemblaAuto" mnemonicParsing="false" onAction="#handleAssembla" text="Assembla Auto" />
                   <MenuItem fx:id="informazioni" mnemonicParsing="false" text="Informazioni Account" />
+              <MenuItem fx:id="esci" mnemonicParsing="false" onAction="#handleExit" text="Esci" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

@@ -101,6 +101,7 @@ public class InserisciRicambioController {
         this.dialogStage = dialogStage;
     }
 
+    @SuppressWarnings("Duplicates")
     private void showShopOverview(){
         try {
             FXMLLoader loader = new FXMLLoader();

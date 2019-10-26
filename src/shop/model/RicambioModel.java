@@ -2,6 +2,9 @@ package shop.model;
 
 public class RicambioModel {
 
+    //La presente classe rappressenta un Ricambio, vengono di seguito descritti i campi atti alla
+    //descrizione di un singolo ricambio e tutti i metodi neccessari per operare su di essi
+
     private String nomeProdotto;
     private String descrizioneProdotto;
     private int percentualeSconto;

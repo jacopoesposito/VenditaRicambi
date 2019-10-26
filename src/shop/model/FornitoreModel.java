@@ -2,6 +2,9 @@ package shop.model;
 
 public class FornitoreModel {
 
+    //La presente classe rappressenta un fornitore, vengono di seguito descritti i campi atti alla
+    //descrizione di un singolo utente e tutti i metodi neccessari per operare su di essi
+
     private String nomeFornitore;
     private String pkFornitore;
 
