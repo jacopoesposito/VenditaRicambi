@@ -74,14 +74,15 @@ public class CarrelloController {
 
     @FXML
     private void handleElimina() {
-        RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
-        if (ricambio != null) {
-            if (ricambio.getQuantitaAcquistata() >= 1) {
-                ricambio.setQuantitaAcquistata(ricambio.getQuantitaAcquistata() - 1);
-                if (ricambio.getQuantitaAcquistata() == 0) {
-                    carrelloList.remove(ricambio);
+        //Questo metodo si occupa di rimuovere un oggetto dalla lista Carello
+        RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem(); //Recupero l'oggetto selezionato
+        if (ricambio != null) { //Verifico che l'oggetto non sia nullo
+            if (ricambio.getQuantitaAcquistata() >= 1) { //Verifico che la quantitaAcquistata sia maggiore uguale a uno
+                ricambio.setQuantitaAcquistata(ricambio.getQuantitaAcquistata() - 1); //Diminuisco di uno la quantità acquistata
+                if (ricambio.getQuantitaAcquistata() == 0) { //Se la quantità acquistata dell'oggetto è uguale a 0
+                    carrelloList.remove(ricambio); //Allora rimuovo l'oggetto dalla lista altrimenti semplicemente si riduce di uno la quantità
                 }
-                tableView.refresh();
+                tableView.refresh(); //Faccio il refresh della taballa in tal modo verranno visuallizati i nuovi dati
                 totale.setText(Float.toString(calcoloTotale(carrelloList)));
             }
         }
@@ -89,16 +90,17 @@ public class CarrelloController {
 
     @FXML
     private void handleAcquista(){
-        if(!carrelloList.isEmpty()){
+        //Questo metodo viene invocato quando l'Utente clicca sul pulsante acquista
+        if(!carrelloList.isEmpty()){ //Controllo prima che il carello non sia vuoto, in caso di esito negativo mostro messaggio di errore
             if(cartaCredito.isSelected()) {
-                showPagamentoCC();
+                showPagamentoCC(); //Mostra lo stage per il pagamento con Carta di Credito
             }
             if(bancomat.isSelected()) {
-                showPagamentoBM();
+                showPagamentoBM(); //Mostra lo stage per il pagamento con Bancomat
             }
             if(contanti.isSelected()){
-                ContantiStrategy contanti = new ContantiStrategy();
-                contanti.paga(calcoloTotale(carrelloList), carrelloList, user);
+                ContantiStrategy contanti = new ContantiStrategy(); //Viene instanziato un oggetto di tipo ContantiStrategy
+                contanti.paga(calcoloTotale(carrelloList), carrelloList, user);  //Viene invocato il metodo per processare il pagamento
                 mainAppController.confirm("Pagamento in contanti effettuato", "Pagamento in Contanti", "Grazie e arrivederci");
             }
         }

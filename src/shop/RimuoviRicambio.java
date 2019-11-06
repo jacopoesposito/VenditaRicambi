@@ -7,7 +7,7 @@ public class RimuoviRicambio {
 
     public void rimuoviRicambio(String pkProdotto){
 
-        MysqlConnection db = MysqlConnection.getDbCon();
+        MysqlConnection db = MysqlConnection.getDbCon(); //Recupero la connessione al DB.
 
         try {
             PreparedStatement preparedStatement = db.conn.prepareStatement("UPDATE PRODOTTO SET VISIBILE = ? WHERE CODICE_PRODOTTO = ?");

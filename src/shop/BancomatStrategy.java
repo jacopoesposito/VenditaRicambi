@@ -34,6 +34,6 @@ public class BancomatStrategy implements PagamentiStrategy{
 
     @Override
     public void paga(float totale, ObservableList<RicambioModel> carelloList, UserModel user) {
-        inserisciOrdine.insertOrdine(totale, carelloList, user);
+        inserisciOrdine.insertOrdine(totale, carelloList, user); //Viene invocato il metodo inserisci ordine che si occupa dell'inserimento dell'ordine nel DB.
     }
 }

@@ -34,18 +34,19 @@ public class RimuoviRicambioController {
 
     @FXML
     public void initialize(){
-        fillRicambioCB();
+        //Questo metodo viene invocato non appena viene inizializzata la scena
+        fillRicambioCB(); //Invoco il metodo che si occuperà di recuperare i dati per la ComboBox
 
-        ricambioComboBox.getItems().setAll(options);
+        ricambioComboBox.getItems().setAll(options); //Setto la ComboBox con i dati ottenuti grazie all'utilizzo del metodo precedente
         ricambioComboBox.setMaxHeight(30);
     }
 
     @FXML
     private void handleRimuovi(){
-        RicambioModel ricambio = ricambioComboBox.getSelectionModel().getSelectedItem();
-        if(ricambio != null){
-            RimuoviRicambio rimuovi = new RimuoviRicambio();
-            rimuovi.rimuoviRicambio(ricambio.getPkProdotto());
+        RicambioModel ricambio = ricambioComboBox.getSelectionModel().getSelectedItem(); //Recupero l'oggetto selezionato
+        if(ricambio != null){  //Verifico che sia stato effettivamente selezionato l'oggetto
+            RimuoviRicambio rimuovi = new RimuoviRicambio(); //Instanzio un oggetto di tipo RimuoviRicambio che si occuperà della rimoozione del ricambio.
+            rimuovi.rimuoviRicambio(ricambio.getPkProdotto()); //Evoco il metodo rimuovi che si occuperà di rimuovere il prodotto corrispondente alla chiave primaria passata in input.
             dialogStage.close();
         }
         else{
@@ -73,11 +74,11 @@ public class RimuoviRicambioController {
     }
 
     private void fillRicambioCB(){
-        MysqlConnection db = MysqlConnection.getDbCon();
+        MysqlConnection db = MysqlConnection.getDbCon(); //Recupero la connessione al DB.
 
         try{
-            PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT CODICE_PRODOTTO, NOME_PRODOTTO FROM PRODOTTO WHERE VISIBILE != 1");
-            ResultSet rs = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT CODICE_PRODOTTO, NOME_PRODOTTO FROM PRODOTTO WHERE VISIBILE != 1"); //Recupero la lista di tutti i prodotti presenti nel DB e ancora disponibili alla vendita
+            ResultSet rs = preparedStatement.executeQuery(); //Eseguo la query
 
             while(rs.next()){
                 RicambioModel ricambio = new RicambioModel();
@@ -85,7 +86,7 @@ public class RimuoviRicambioController {
                 ricambio.setPkProdotto(rs.getString("CODICE_PRODOTTO"));
                 ricambio.setNomeProdotto(rs.getString("NOME_PRODOTTO"));
 
-                options.add(ricambio);
+                options.add(ricambio); //Popolo la lista ricambio con gli oggetti restituiti dalla query
             }
         } catch (SQLException e) {
             e.printStackTrace();

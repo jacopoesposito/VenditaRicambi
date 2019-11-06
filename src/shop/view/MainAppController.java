@@ -45,17 +45,18 @@ public class MainAppController {
     }
 
     @FXML
-    private void handleAccedi(){
-        if(isInputValid()){
-            mail = mailTextField.getText();
+    private void handleAccedi(){ //Questo metodo viene invocato nel momento in cui si clicca sul pulsante accedi.
+        if(isInputValid()){ //Eseguo prima un controllo per verificare che l'input sia valido.
+            mail = mailTextField.getText(); //Recupero la mail e la password che sono state inserite
             password = passTextField.getText();
-            UserModel user = login.selectUser(mail);
+            UserModel user = login.selectUser(mail); //Invoco il metodo selectUser della classe Login in modo da avere l'utente associato a quella mail.
             System.out.println(user.getNome());
-            if(user.getNome() == null){
+            if(user.getNome() == null){ //Eseguo un controllo sull'esistenza dell'utente, in caso di esito negativo mostro una DialogStage che comunica che nessun utente è associato alla mail inserita.
                 alert("Nessun account associato a questa E-Mail", "Mail Sbagliata", "Errore: ");
             }
-            else{
-                salt = login.getSalt(mail);
+            else{ //In caso di esito positivo procedo alla verifica della password.
+                salt = login.getSalt(mail); //Recupero il Salt
+                //Per verificare che la password inserita sia corretta faccio l'hashing della password inserita + il Salt e lo confronto alla password salavata nel DB.
                 if(Hashing.sha256().hashString(password + salt, StandardCharsets.UTF_8).toString().equals(user.getPassword())){
                     System.out.println("ACCESSO ESEGUITO");
                     mainApp.showShopOverview(user);
@@ -78,18 +79,18 @@ public class MainAppController {
 
 
     @SuppressWarnings("Duplicates")
-    private Boolean isInputValid(){
+    private Boolean isInputValid(){ //Questo metodo si occcupa di verificare che l'input sia valido
         String errorMessage = "";
-        if(mailTextField.getText() == null || mailTextField.getText().length() == 0){
+        if(mailTextField.getText() == null || mailTextField.getText().length() == 0){//Verifico che venga inserito un indirizzo mail.
             errorMessage += "Inserisci indirizzo Mail \n";
         }
-        if(passTextField.getText() == null || passTextField.getText().length() == 0){
+        if(passTextField.getText() == null || passTextField.getText().length() == 0){//Verifico che sia inserita la password.
             errorMessage += "Inserisci Password \n";
         }
         if (errorMessage.length() == 0) {
             return true;
         } else {
-            // Show the error message.
+            // Mostro il messaggio di errore.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initOwner(dialogStage);
             alert.setTitle("Campi Errati");

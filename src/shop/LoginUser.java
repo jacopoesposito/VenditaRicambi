@@ -21,12 +21,12 @@ public class LoginUser implements userDAO {
     private String salt;
 
     @Override
-    public UserModel selectUser(String mail) {
-        MysqlConnection db = MysqlConnection.getDbCon();
+    public UserModel selectUser(String mail) { //Il seguente metodo si occupa di selezionare l'utente per effettuare il login
+        MysqlConnection db = MysqlConnection.getDbCon(); //Recupero la connessione al db.
         try {
-            PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT * FROM UTENTE WHERE MAIL = ?");
+            PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT * FROM UTENTE WHERE MAIL = ?"); //Preparo la Select ricercando come parametro la mail inserita
             preparedStatement.setString(1, mail);
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = preparedStatement.executeQuery(); //Eseguo la Query
             while(rs.next()){
                 codiceUtente = rs.getString("CODICE_UTENTE");
                 mail = rs.getString("MAIL");
@@ -42,16 +42,16 @@ public class LoginUser implements userDAO {
             e.printStackTrace();
         }
 
-        UserModel user = new UserModel(mail, nome, cognome, password, password, numeroCivico, nomeVia, citta, codiceUtente);
+        UserModel user = new UserModel(mail, nome, cognome, password, password, numeroCivico, nomeVia, citta, codiceUtente); //Utilizzo i parametri recuperati instanziando un oggetto utente
         System.out.println(user.getNome());
         return user;
     }
 
-    public String getSalt(String mail){
+    public String getSalt(String mail){ //Questo metodo viene utilizzato per ritornare il Salt
         MysqlConnection db1 = MysqlConnection.getDbCon();
 
         try {
-            PreparedStatement preparedStatement = db1.conn.prepareStatement("SELECT SALT FROM UTENTE WHERE MAIL = ?");
+            PreparedStatement preparedStatement = db1.conn.prepareStatement("SELECT SALT FROM UTENTE WHERE MAIL = ?");//Preparo la query basata sull'indirizzo Mail
             preparedStatement.setString(1, mail);
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
@@ -61,7 +61,7 @@ public class LoginUser implements userDAO {
             e.printStackTrace();
         }
         //System.out.println(salt);
-        return salt;
+        return salt; //Ritorno il Salt.
     }
 
     @Override

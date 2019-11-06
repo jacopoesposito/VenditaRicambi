@@ -78,7 +78,7 @@ public class InserisciRicambioController {
 
     @FXML
     public void handleInserisci(){
-        if(isInputValid()){
+        if(isInputValid()){//Controllo che l'input sia valido
             ricambio.setNomeProdotto(nomeProdottoTextField.getText());
             ricambio.setDescrizioneProdotto(descrizioneProdottoTextField.getText());
             ricambio.setPercentualeSconto(Integer.parseInt(percentualeScontoTextField.getText()));
@@ -87,8 +87,8 @@ public class InserisciRicambioController {
             ricambio.setFkCategoria(inserisciRicambio.selectPkCategoria(categoriaComboBox.getSelectionModel().getSelectedItem()));
             ricambio.setQuantita(Integer.parseInt(quantitaTextField.getText()));
 
-            inserisciRicambio.insertRicambio(ricambio);
-            showShopOverview();
+            inserisciRicambio.insertRicambio(ricambio);//Invoco il metodo per l'inserimento del ricambio all'interno del DB
+            showShopOverview(); //Mostro la view del negozio
         }
     }
 
@@ -111,7 +111,7 @@ public class InserisciRicambioController {
             Stage dialogStage = this.dialogStage;
             dialogStage.setTitle("Vendita Ricambi");
             Scene scene = new Scene(shopOverview);
-            dialogStage.setScene(scene); //Provi che funzioni
+            dialogStage.setScene(scene);
 
             ShopOverviewController controller = loader.getController();
             controller.setUser(user);
@@ -141,13 +141,14 @@ public class InserisciRicambioController {
     }
 
     private void fillFornitoreCB(){
+        //Recupero la connessione al DB
         MysqlConnection db = MysqlConnection.getDbCon();
 
         try {
-            PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT NOME_FORNITORE FROM FORNITORE");
-            ResultSet rs = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT NOME_FORNITORE FROM FORNITORE"); //Preparo la query per ottenere i fornitori
+            ResultSet rs = preparedStatement.executeQuery(); //Eseguo la query
             while(rs.next()){
-                optionsFornitore.add(rs.getString("NOME_FORNITORE"));
+                optionsFornitore.add(rs.getString("NOME_FORNITORE")); //aggiungo i fornitori alla lista optionsFornitore
                 System.out.println(optionsFornitore);
             }
 
@@ -156,54 +157,55 @@ public class InserisciRicambioController {
         }
     }
 
-    private Boolean isInputValid(){
+    private Boolean isInputValid(){ //Metodo per il controllo dell'Input
         String errorMessage = "";
 
-        if(nomeProdottoTextField.getText().length() == 0 || nomeProdottoTextField.getText() == null){
+        if(nomeProdottoTextField.getText().length() == 0 || nomeProdottoTextField.getText() == null){ //Verifico che siano inserito il nome
             errorMessage += "Inserisci nome prodotto\n";
         }
-        if(descrizioneProdottoTextField.getText().length() == 0 || descrizioneProdottoTextField.getText() == null){
+        if(descrizioneProdottoTextField.getText().length() == 0 || descrizioneProdottoTextField.getText() == null){ //Verifico che sia inserita una descrizione
             errorMessage += "Inserisci descrizione del prodotto\n";
         }
-        if(percentualeScontoTextField.getText().length() == 0 || percentualeScontoTextField.getText() == null){
+        if(percentualeScontoTextField.getText().length() == 0 || percentualeScontoTextField.getText() == null){ //Verifico che sia inserita la percentuale dello sconto
             errorMessage += "Inserire la percentuale di sconto del prodotto\n";
         }
         else{
             try{
-                Integer.parseInt(percentualeScontoTextField.getText());
+                Integer.parseInt(percentualeScontoTextField.getText()); //Controllo che sia un numero intero
             } catch (NumberFormatException e){
                 errorMessage += "Inerire un numero intero come percentuale di sconto\n";
             }
         }
-        if(costoTextField.getText().length() == 0 || costoTextField.getText() == null){
+        if(costoTextField.getText().length() == 0 || costoTextField.getText() == null){ //Verifico che sia inserito il prezzo dell'articolo
             errorMessage += "Inserire il prezzo del prodotto\n";
         }
         else{
             try{
-                Float.parseFloat(costoTextField.getText());
+                Float.parseFloat(costoTextField.getText()); //Controllo che sia un numero float
             } catch (NumberFormatException e){
                 errorMessage += "Inserire un numero per indicare il prezzo del prodotto\n";
             }
         }
-        if(quantitaTextField.getText().length() == 0 || quantitaTextField.getText() == null){
+        if(quantitaTextField.getText().length() == 0 || quantitaTextField.getText() == null){ //Verifico che sia stata inserita la quantità del prodotto
             errorMessage+= "Inserire la quantità del ricambio\n";
         }
         else{
             try{
-                Integer.parseInt(quantitaTextField.getText());
+                Integer.parseInt(quantitaTextField.getText()); //Controllo che sia un numero intero
             } catch (NumberFormatException e){
                 errorMessage += "Inserire un numero intero per indicare la quantita delle scorte\n";
             }
         }
-        if(categoriaComboBox.getSelectionModel().getSelectedIndex() == 0){
+        if(categoriaComboBox.getSelectionModel().getSelectedIndex() == 0){ //Verifico che sia stata selezionata una categoria
             errorMessage += "Seleziona una cateogoria\n";
         }
-        if(fornitoreComboBox.getSelectionModel().getSelectedIndex() == 0){
+        if(fornitoreComboBox.getSelectionModel().getSelectedIndex() == 0){ //Verifico che sia stata selezionata una categoria
             errorMessage += "Seleziona un fornitore\n";
         }
         if (errorMessage.length() == 0) {
             return true;
         } else {
+            //Stampo a schermo gli errori
             mainAppController.alert("Campi Errati", "Correggi i seguenti campi", errorMessage);
             return false;
         }

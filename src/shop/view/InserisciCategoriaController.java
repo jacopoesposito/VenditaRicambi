@@ -68,6 +68,7 @@ public class InserisciCategoriaController {
     }
 
     private Boolean isInputValid(){
+        //Metodo per eseguire un controllo sull'input della categoria
        if(nomeCategoriaField.getText() == null || nomeCategoriaField.getText().length() == 0){
            mainAppController.alert("Inserisci una categoia", "Errore", "Errore");
            return false;

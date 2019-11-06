@@ -99,20 +99,21 @@ public class ShopOverviewController {
     private TableColumn<RicambioModel, String> colCategoriaProdotto;
 
     @FXML
-    private void initialize(){
-        fillTableView();
+    private void initialize(){//Metodo initialize viene chiamato ogni qual volta viene invocato lo Stage
+        fillTableView(); //Viene chiamato il metodo che si occupa di recuperare tutti i dati da inserire nella TableView
 
-        colNomePorodotto.setCellValueFactory(new PropertyValueFactory<>("nomeProdotto"));
-        colFornitoreProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeFornitore"));
-        colCategoriaProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeCategoria"));
+        colNomePorodotto.setCellValueFactory(new PropertyValueFactory<>("nomeProdotto")); //Setto i nomi dei prodotti
+        colFornitoreProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeFornitore"));  //Setto i nomi dei fornitori
+        colCategoriaProdotto.setCellValueFactory(new PropertyValueFactory<>("nomeCategoria"));  //Setto le categorie
 
-        tableView.setItems(ricambioList);
+        tableView.setItems(ricambioList); //Setto la TableView inserendo i ricambi
 
-        tableView.setOnMousePressed( (MouseEvent event) -> {
-            if(event.getClickCount() == 1){
-                RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
-                if(ricambio != null) {
+        tableView.setOnMousePressed( (MouseEvent event) -> { //Rilevo l'evento di pressione del mouse
+            if(event.getClickCount() == 1){ //Se l'utente effettua un click sul mouese
+                RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem(); //Viene preso l'oggetto selezionato
+                if(ricambio != null) { //Controllo che la selezione non sia nulla
                     //System.out.println(ricambio.getCosto());
+                    //Setto le varie TextView della descrizione del prodotto
                     nomeProdottoText.setText(ricambio.getNomeProdotto());
                     descrizioneProdottoText.setText(ricambio.getDescrizioneProdotto());
                     pkProdotto.setText(ricambio.getPkProdotto());
@@ -127,14 +128,15 @@ public class ShopOverviewController {
 
     public void setDialogStage(Stage dialogStage){
         this.dialogStage = dialogStage;
-        if(checkIsAdmin()){
+        if(checkIsAdmin()){ //Controllo che l'user sia un Admin
+            //Aggiungo dinamicamente le voci al menu Admin
             admin.getItems().add(menuAggiungi);
             admin.getItems().add(menuAggiungiCategoria);
             admin.getItems().add(menuAggiungiFornitore);
             admin.getItems().add(menuCreaAdmin);
             admin.getItems().add(menuRimuoviProdotto);
             admin.getItems().add(menuVisualizzaVendite);
-            menuBar.getMenus().add(admin);
+            menuBar.getMenus().add(admin); //Aggiungo il menu admin
         }
         menuAggiungi.setOnAction(event -> {showInserisciRicambio();});
         menuAggiungiCategoria.setOnAction(event -> {showAggiungiCategoria();});
@@ -145,6 +147,7 @@ public class ShopOverviewController {
     }
 
     public void setCarelloList(ObservableList<RicambioModel> carelloList) {
+        //Setto la lista di oggetti inseriti nel carello
         this.carelloList = carelloList;
     }
 
@@ -158,6 +161,7 @@ public class ShopOverviewController {
     @SuppressWarnings("Duplicates")
     @FXML
     private void handleAcquista(){
+        //Questo metodo viene invocato quando qualcuno clicca su acquista
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/shop/view/Carrello.fxml"));
@@ -168,6 +172,7 @@ public class ShopOverviewController {
             dialogStage.setScene(scene);
 
             CarrelloController controllerCarrello = loader.getController();
+            //Setto l'User, lo stage e la carelloList all'interno del Controller
             controllerCarrello.setUser(user);
             controllerCarrello.setDialogStage(dialogStage);
             controllerCarrello.setCarrelloList(carelloList);
@@ -183,12 +188,13 @@ public class ShopOverviewController {
 
     @FXML
     private void handleAggiungi(){
-        RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem();
-        if(ricambio != null) {
-            if (ricambio.getQuantita() != 0) {
-                ricambio.setQuantitaAcquistata(ricambio.getQuantitaAcquistata() + 1);
-                ricambio.setQuantita(ricambio.getQuantita() - 1);
-                if (!carelloList.contains(ricambio)) {
+        //Questo metodo viene chiamato quando si clicca su aggiung
+        RicambioModel ricambio = tableView.getSelectionModel().getSelectedItem(); //Viene preso l'oggetto selezionato
+        if(ricambio != null) { //Si effettua un controllo per verificare che sia stato effettivamente selezionato un ricambio
+            if (ricambio.getQuantita() != 0) { //Se la quantità del ricambio è diversa da zero allora posso procedere
+                ricambio.setQuantitaAcquistata(ricambio.getQuantitaAcquistata() + 1); //Aument di uno la quantità acquistata
+                ricambio.setQuantita(ricambio.getQuantita() - 1); //Diminusico di uno la quantità disponibile del ricambio
+                if (!carelloList.contains(ricambio)) {//Se nel carrello non è già presente il ricambio allora lo inserisco, in tal modo non avrò oggetti duplicati nel carrello
                     carelloList.add(ricambio);
                 }
                 quantita.setText(String.valueOf(ricambio.getQuantita()));
@@ -408,7 +414,8 @@ public class ShopOverviewController {
 
     @SuppressWarnings("Duplicates")
     private void fillTableView(){
-        MysqlConnection db = MysqlConnection.getDbCon();
+        //Questo metodo serve per riempire la Tabelle con tutti i ricambi
+        MysqlConnection db = MysqlConnection.getDbCon(); //Recupero la connessione al DB.
 
         try{
             PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT CODICE_PRODOTTO, `NOME_PRODOTTO`, `DESCRIZIONE_PRODOTTO`, `PERCENTUALE_SCONTO`, `COSTO`, `PREZZO_S`, `FK_CODICE_FORNITORE`, `FK_ID_CATEGORIA`, " +
@@ -430,6 +437,8 @@ public class ShopOverviewController {
                 ricambio.setNomeFornitore(rs.getString(10));
                 ricambio.setQuantita(rs.getInt(11));
                 ricambio.setVisibilita(rs.getInt(12));
+                //Se la visibilità del ricambio è impostata su 0 allora vuol dire che il ricambio è ancora disponibile alla vendita/visualizzaione quindi lo inserico nella lista, qu
+                // questa scelta è stata operata per far sì che l'admin possa rimuovere dei ricambi dallo shop pur mantendo uno storico effettivo all'interno del DB.
                 if(ricambio.getVisibilita() == 0) {
                     ricambioList.add(ricambio);
                 }
@@ -440,13 +449,17 @@ public class ShopOverviewController {
     }
 
     public void checkQuantita(){
+        //Metodo per il controllo della quantita dei prodotti
             for(RicambioModel ricambioAggiunto : carelloList) {
                 if (ricambioList.contains(ricambioAggiunto)) {
+                    //Sottrago la quantita del prodotto aggiunto alla quantità del prodotto nella lista ricambi
                     int quantita = ricambioList.get(ricambioList.indexOf(ricambioAggiunto)).getQuantita() - ricambioAggiunto.getQuantitaAcquistata();
-                    if(quantita > 0){
+                    if(quantita > 0){ //Controllo che la quantita sia maggiore di 0
+                        //Se maggiore di 0 setto la quantità
                         ricambioList.get(ricambioList.indexOf(ricambioAggiunto)).setQuantita(quantita);
                     }
                     else{
+                        //Se minore la setto direttamente a 0, perchè vuol dire che sono stati venduti tutti i prodotti
                         ricambioList.get(ricambioList.indexOf(ricambioAggiunto)).setQuantita(0);
                     }
                 }

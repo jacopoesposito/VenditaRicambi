@@ -54,10 +54,10 @@ public class PagamentoBMController extends PagamentiElettronici {
             try{
                 BancomatStrategy bancomatStrategy = new BancomatStrategy(nomeTitolareTextField.getText(), cognomeTitolareTextField.getText(),
                         numeroBMTextField.getText(), Integer.valueOf(pinTextField.getText()),formatter.parse(dataScadenzaTextField.getText()));
-                bancomatStrategy.paga(totale, carrelloList, user);
+                bancomatStrategy.paga(totale, carrelloList, user); //Viene instanziato un oggetto di tipo BancomatStrategy che si occuppa di gestire il pagamento con Bancomat
                 mainAppController.confirm("Ordine pagato con BM intestata a: " + bancomatStrategy.getNome() +
                         " " + bancomatStrategy.getCognome(), "Ordine effettuato", "Ordine effettuato");
-                confermaOperazione(user, dialogStage, carrelloList);
+                confermaOperazione(user, dialogStage, carrelloList); //Invoco il metodo ConfermaOperazione della classe Padre in tal modo da ritornare alla home del negozio
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -92,19 +92,19 @@ public class PagamentoBMController extends PagamentiElettronici {
 
     protected Boolean isInputValid(){
 
-        String errorMessage = checkNameData(nomeTitolareTextField, cognomeTitolareTextField, dataScadenzaTextField);
-        if(numeroBMTextField.getText().length() == 0 || numeroBMTextField.getText() == null){
+        String errorMessage = checkNameData(nomeTitolareTextField, cognomeTitolareTextField, dataScadenzaTextField); //Chiamo il metodo CheckNameData per verificare i dati del BM
+        if(numeroBMTextField.getText().length() == 0 || numeroBMTextField.getText() == null){ //Verifico che sia inserito il numero del bancomat
             errorMessage += "Insersci il numero del Bancomat\n";
         }
-        if(numeroBMTextField.getText().length() != 15 && numeroBMTextField.getText().length() != 16){
+        if(numeroBMTextField.getText().length() != 15 && numeroBMTextField.getText().length() != 16){ //Verifico che sia effettivamente il numero di un Bancomat attraverso la lunghezza del codice
             errorMessage += "Inserire un codice di 15 o 16 cifre\n";
         }
-        if(pinTextField.getText().length() == 0 || pinTextField.getText() == null){
+        if(pinTextField.getText().length() == 0 || pinTextField.getText() == null){ //Verifico che sia inserito il PIN
             errorMessage += "Inserisci il PIN\n";
         }
-        else if(pinTextField.getText().length() == 4){
+        else if(pinTextField.getText().length() == 4){ //Verifico che il PIN sia effettivamente composto da 4 cifre
             try{
-                Integer.parseInt(pinTextField.getText());
+                Integer.parseInt(pinTextField.getText()); //Verifico che il PIN sia un'intero
             }
             catch (NumberFormatException e){
                 errorMessage += "Inserire un numero intero\n";

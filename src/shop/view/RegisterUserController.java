@@ -56,7 +56,7 @@ public class RegisterUserController {
         return okClicked;
     }
 
-    public void setUser(UserModel user){
+    public void setUser(UserModel user){// Metodo set per l'User
         this.user = user;
 
         nomeField.setText(user.getNome());
@@ -71,7 +71,7 @@ public class RegisterUserController {
     }
 
     @FXML
-    private void handleOK(){
+    private void handleOK(){//Questo metodo viene invocato quando l'utente clicca Continua nel form di Registrazione.
         if(isInputValid()){
             user.setNome(nomeField.getText());
             user.setCognome(cognomeField.getText());
@@ -84,8 +84,8 @@ public class RegisterUserController {
 
 
             okClicked = true;
-            register.insertUser(user);
-            dialogStage.close();
+            register.insertUser(user); //Invoco il metodo insertUser della classe register.
+            dialogStage.close(); //Chiudo la DialogStage
         }
     }
 
@@ -95,7 +95,7 @@ public class RegisterUserController {
     }
 
     @SuppressWarnings("Duplicates")
-    private Boolean isInputValid(){
+    private Boolean isInputValid(){ //Controllo che l'input sia valido
         String errorMessage = "";
 
         if(nomeField.getText() == null || nomeField.getText().length() == 0){

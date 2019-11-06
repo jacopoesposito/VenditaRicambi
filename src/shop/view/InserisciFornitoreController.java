@@ -35,12 +35,12 @@ public class InserisciFornitoreController {
     private void handleInserisci(){
         if(isInputValid()){
             String nomeFornitore = nomeFornitoreField.getText().toLowerCase();
-            FornitoreModel fornitore = inserisciFornitore.selectFornitore(nomeFornitore);
+            FornitoreModel fornitore = inserisciFornitore.selectFornitore(nomeFornitore); //Select che ritorna il fornitore desiderato
             okClicked = true;
-            if(fornitore.getPkFornitore() == null){
-                fornitore.setNomeFornitore(nomeFornitore);
+            if(fornitore.getPkFornitore() == null){ //Eseguo un controllo sulla chiave primaria del fornitore, cosi se risulta nulla vorrà dire che il fornitore non è presente nel db
+                fornitore.setNomeFornitore(nomeFornitore); //Setto il nome del fornitore
                 System.out.println(fornitore.getPkFornitore() + " " + fornitore.getNomeFornitore());
-                inserisciFornitore.insertFornitore(fornitore);
+                inserisciFornitore.insertFornitore(fornitore); //Invoco il metodo di inserimento del Fornitore nel db passando l'oggetto Fornitore.
                 dialogStage.close();
             }
             else{

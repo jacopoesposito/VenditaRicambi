@@ -35,11 +35,12 @@ public class InserisciAdminController {
 
     @FXML
     private void handleInserisci(){
-        user = userComboBox.getSelectionModel().getSelectedItem();
-        if(user != null){
-            InserisciAdmin admin = new InserisciAdmin();
-            admin.inserisciAdmin(user.getCodiceUtente());
-            dialogStage.close();
+        //Questo metodo viene invocato quando si clicca il pulsante aggiungi
+        user = userComboBox.getSelectionModel().getSelectedItem(); //Prendo l'User selezionato
+        if(user != null){ //Effettuo un controllo per verificare che l'User abbia selezionato un utente
+            InserisciAdmin admin = new InserisciAdmin(); //Instanzio un oggetto di tipo InserisciAdmin
+            admin.inserisciAdmin(user.getCodiceUtente()); //Evoco il metodo insersciAdmin passando il codice utente dell'User selezionato
+            dialogStage.close(); //Chiudo la dialog stage
         }
         else{
             mainAppController.alert("Seleziona un utente!", "Errore", "Errore");

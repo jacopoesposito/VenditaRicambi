@@ -1,6 +1,7 @@
 package shop;
 
 
+
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -54,7 +55,7 @@ public class MainApp extends Application {
         }
     }
 
-    public void showPersonOverview() {
+    public void showPersonOverview() { //Inizializzo l'interfaccia utente del form di login
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
@@ -70,7 +71,7 @@ public class MainApp extends Application {
         }
     }
 
-    public boolean showShopOverview(UserModel user){
+    public boolean showShopOverview(UserModel user){ //Inizializzo l'interfaccia utente del negozio
 
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -82,6 +83,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(shopOverview);
             dialogStage.setScene(scene);
 
+            //Setto il controller e mostro lo stage.
             ShopOverviewController controller = loader.getController();
             controller.setUser(user);
             controller.setDialogStage(dialogStage);
@@ -98,13 +100,13 @@ public class MainApp extends Application {
 
     }
 
-    public boolean showAddUser(){
+    public boolean showAddUser(){ //Inizializzo l'interfaccia utente del form di registrazione
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/shop/view/Prova.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
-            // Create the dialog Stage.
+            // Creo la DialogStage.
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Registrazione");
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -112,12 +114,12 @@ public class MainApp extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // Set the person into the controller.
+            // Setto il controller.
             RegisterUserController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            //controller.setUser(user);
 
-            // Show the dialog and wait until the user closes it
+
+            //Mostra lo Stage e aspetta finchè non viene chiusa.
             dialogStage.showAndWait();
 
             return controller.isOkClicked();

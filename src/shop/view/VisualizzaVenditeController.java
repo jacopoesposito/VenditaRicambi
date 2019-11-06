@@ -39,13 +39,14 @@ public class VisualizzaVenditeController {
     private Button cancell;
 
     public void initialize(){
-        fillTableV();
+        //Questo metodo viene chiamato quando viene inizializzata la scena
+        fillTableV(); //Chiamo il metodo fillTableV che si occuperà di recupare i dati per TableView.
 
         colNomePorodotto.setCellValueFactory(new PropertyValueFactory<>("nomeProdotto"));
         colQuantitaProdotto.setCellValueFactory(new PropertyValueFactory<>("quantitaAcquistata"));
         colPrezzoProdotto.setCellValueFactory(new PropertyValueFactory<>("costo"));
 
-        tableView.setItems(venditeList);
+        tableView.setItems(venditeList); //Setto la tableview con la lista degli oggetti venduti, recuperata attraverso il metodo precedente
     }
 
     public void setDialogStage(Stage dialogStage){
@@ -66,12 +67,12 @@ public class VisualizzaVenditeController {
 
     private void fillTableV(){
 
-        MysqlConnection db = MysqlConnection.getDbCon();
+        MysqlConnection db = MysqlConnection.getDbCon(); //Recupero la connessione al DB.
 
         try{
             PreparedStatement preparedStatement = db.conn.prepareStatement("SELECT CODICE_PRODOTTO, NOME_PRODOTTO, SUM(PRODOTTO_ORDINATO.QUANTITA) AS QUANTITA," +
-                    "PRODOTTO_ORDINATO.COSTO FROM PRODOTTO JOIN PRODOTTO_ORDINATO ON CODICE_PRODOTTO = FK_CODICE_PRODOTTO GROUP BY CODICE_PRODOTTO");
-            ResultSet rs = preparedStatement.executeQuery();
+                    "PRODOTTO_ORDINATO.COSTO FROM PRODOTTO JOIN PRODOTTO_ORDINATO ON CODICE_PRODOTTO = FK_CODICE_PRODOTTO GROUP BY CODICE_PRODOTTO"); //Prepraro la query che ritorna i prodotti venduti
+            ResultSet rs = preparedStatement.executeQuery();//Eseguo la query
 
             while (rs.next()){
                 RicambioModel ricambio = new RicambioModel();
@@ -82,7 +83,7 @@ public class VisualizzaVenditeController {
                 ricambio.setCosto(rs.getFloat(4));
 
 
-                venditeList.add(ricambio);
+                venditeList.add(ricambio);//Salvo gli oggetti recuperati attraverso la query all'interno della Lista venditeList.
             }
         } catch (SQLException e) {
             e.printStackTrace();
